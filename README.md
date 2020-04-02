@@ -121,7 +121,7 @@ curl --location --request POST 'http://localhost:8080/api/v1/vehicles' \
 
 ### Get Vehicle by ID REST API
 - HTTP Method: GET 
-- Request URL: http://localhost:8080/api/v1/vehicles/\{id}
+- Request URL: http://localhost:8080/api/v1/vehicles/2
 
 ```curl
 curl --location --request GET 'http://localhost:8080/api/v1/vehicles/2' \
@@ -152,6 +152,8 @@ curl --location --request DELETE 'http://localhost:8080/api/v1/vehicles/1' --dat
 ![screenshot 1](https://github.com/AndresHerrera/geosura-test/raw/master/screenshot.png "Screen Shot 1")
 
 ![screenshot 2](https://github.com/AndresHerrera/geosura-test/raw/master/screenshot_2.png "Screen Shot 2")
+
+![screenshot 3](https://github.com/AndresHerrera/geosura-test/raw/master/screenshot_3.png "Screen Shot 3")
 
 ### inspired on
 [1] https://github.com/RameshMF/spring-boot-tutorial/tree/master/springboot2-postgresql-jpa-hibernate-crud-example
