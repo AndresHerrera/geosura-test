@@ -6,7 +6,8 @@
 https://geosura-test.herokuapp.com/
 
 
-### Local installation 
+### Local installation
+ 
 #### Requeriments
 
 * Spring Boot - 2.2.6
@@ -18,7 +19,7 @@ https://geosura-test.herokuapp.com/
 * PostgreSQL 10.2
 * PostGIS 2.5
 
-Clone this repo.
+#### Clone this repo.
 
 *git clone https://github.com/AndresHerrera/geosura-test.git*
 
@@ -26,7 +27,7 @@ Clone this repo.
 
 
 #### Configuring Spring Boot to use PostgreSQL
-needed to configure postgresql connectivity into application.properties:
+Needed to configure postgresql connectivity into application.properties:
 
 ```config
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
@@ -36,6 +37,45 @@ spring.datasource.url=jdbc:postgresql://localhost:5432/geosuradb
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 ```
+
+#### Create Database
+```sql
+CREATE DATABASE geosuradb;
+```
+
+#### Database Schema
+```sql
+CREATE TABLE IF NOT EXISTS public.vehicles(
+  id SERIAL  NOT NULL ,
+  lon double precision, 
+  lat double precision,
+  licence_plate VARCHAR(8)
+ );	
+ ALTER TABLE public.vehicles ADD CONSTRAINT vehicles_pk PRIMARY KEY(id);
+ SELECT AddGeometryColumn('public','vehicles','the_geom',4326,'POINT',2);
+ ```
+ 
+#### Enable PostGIS Extension
+   ```sql
+ CREATE EXTENSION IF NOT exists postgis;
+  ```
+  
+#### Data samples
+ ```sql
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.53249,3.40570, 'AAA-000');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.50503,3.43372, 'BBB-111');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.51568,3.44997, 'CCC-222');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.49494,3.48135, 'DDD-333');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.52585,3.37757, 'EEE-444');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.53886,3.38145, 'FFF-555');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.54631,3.40942, 'GGG-666');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.51512,3.46005, 'HHH-777');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.52797,3.48456, 'III-888');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.46759,3.43351, 'OOO-089');
+INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.50262,3.39943, 'UUU-456');
+UPDATE public.vehicles set the_geom = st_setsrid(st_makepoint(lon,lat),4326);
+```
+
 
 #### Compile and Run the application
 *mvn spring-boot:run*

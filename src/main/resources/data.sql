@@ -9,5 +9,4 @@ INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.51512,3.46005, 'HH
 INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.52797,3.48456, 'III-888');
 INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.46759,3.43351, 'OOO-089');
 INSERT INTO public.vehicles(lon,lat,licence_plate) VALUES(-76.50262,3.39943, 'UUU-456');
-
 UPDATE public.vehicles set the_geom = st_setsrid(st_makepoint(lon,lat),4326);
