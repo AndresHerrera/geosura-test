@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>GeoSURA - Test :  Andres Herrera</title>
+	
+    <link rel="stylesheet" href="https://js.arcgis.com/4.14/esri/themes/dark-blue/main.css">
+
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+   
+    
+	<script src="https://js.arcgis.com/4.14/dojo/dojo.js"></script>
+  
+    <script>
+      var map;
+	  var view;
+
+      require(
+	  ["dojo/on",
+	  "dojo/dom",
+	  "esri/Map",
+	  "esri/views/MapView",
+	  "esri/widgets/BasemapToggle",
+	  "esri/Graphic",
+      "esri/layers/GraphicsLayer",
+	  "esri/symbols/PictureMarkerSymbol",
+	  "dojo/store/JsonRest",
+	  "dojo/html",
+	  "dojo/domReady!"
+	  ], 
+	  function(on , dom, Map, MapView, BasemapToggle, Graphic, GraphicsLayer, PictureMarkerSymbol, JsonRestStore, html  ) 
+	  {
+        
+		map = new Map({
+			basemap: "topo"
+		});
+
+		view = new MapView({
+			container: "mymap",
+			map: map,
+			center: [-76.49494,3.48135],
+			zoom: 13
+		});
+		
+		// Create a car symbol
+		var carSymbol = {
+			type: "picture-marker",
+			url: "http://static.arcgis.com/images/Symbols/Transportation/CarYellowFront.png",
+			width: "48px",
+			height: "48px"
+		};
+		
+		var vehicleTable=`<thead><th>ID</th><th>PLACA</th><th>LAT</th><th>LON</th><th>IR</th></thead>`;
+
+		// Create popup template
+		var popupTemplate = {
+			title: "Vehiculo Id : {atID}",
+			content: "Placa: <b>{atPlaca}</b><br><br>Ubicado en coordenadas:<br>Longitude: <b>{atLon}</b><br>Latitude: <b>{atLat}</b>."
+		};
+		
+		//make  a vehicle point from lon, lat coordinates
+		function makeVehiclePoint(id, lon,lat,placa)
+		{	
+			vehicleTable+=`<tr><td>${id}</td><td>${placa}</td><td>${lat}</td><td>${lon}</td><td><a href='javascript:verVehiculo(${id},${lon},${lat});'>IR</a></td></td></tr>`;
+			let graphicsLayer = new GraphicsLayer();
+			let pointGraphic = new Graphic({
+				geometry: {type: "point",longitude: lon,latitude: lat},
+				symbol: carSymbol,
+				attributes: {atID: id,atPlaca: placa,atLat: lat, atLon: lon },
+				popupTemplate: popupTemplate
+			});
+			graphicsLayer.add(pointGraphic);
+			//add to map
+			map.add(graphicsLayer);
+			html.set(dom.byId("vehiclestb"), '<tbody>'+vehicleTable+'</tbody>' );
+		};
+		
+		var store = new JsonRestStore({target: "/api/v1/" });
+		store.query("vehicles").forEach(function(data){
+			makeVehiclePoint(data.id, data.longitude,data.latitude, data.licencePlate);			
+        });
+		
+		var toggle = new BasemapToggle({
+			view: view,
+			nextBasemap: "hybrid" 
+		  });
+		view.ui.add(toggle, "top-right");
+		
+      });
+	  
+	function verVehiculo(id,lon,lat){ 
+		view.goTo({
+		  center: [lon, lat],
+		  zoom: 18
+		});
+		console.log('zoom al id'+id);
+	};
+	  
+    </script>
+  </head>
+
+	<body>
+	
+	<div id="sidebar" class="panel">
+	  <div class="header-slidebar">
+		<h3>Listado Vehiculos</h3>
+		<img src="http://static.arcgis.com/images/Symbols/Transportation/CarYellowFront.png"/>
+	  </div>
+	  <div class="vehiclestb-scroll">
+		  <table id="vehiclestb">
+		  </table>
+	  </div>
+	  <hr>
+	  <div id="menu-options">
+	  <ul>
+		  <li><a href="/new" target="_blank">Agregar Nuevo Vehiculo</a></li>
+		</ul>
+	  </div>
+	
+	</div>
+
+	<div id="content" class="panel">
+	     <div id="mymap">
+		 </div>
+	</div>
+	
+	
+		 
+	</body>
+</html>

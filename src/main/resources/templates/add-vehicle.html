@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add New vehicle !</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+<p>
+	<h1> CREAR NUEVO VEHICULO </h1>
+</p>
+<div id="messages"></div>
+<form id="form" method="post" action="" role="form" data-toggle="validator">
+    <div class="messages"></div>
+    <div class="controls">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="licencePlate"><b>PLACA</b></label>
+                    <input id="licencePlate" type="text" name="licencePlate" class="form-control" 
+					placeholder="Ingrese numero de Placa *" required="required" data-error="licencePlate is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+		 </div>
+		 <b>INGRESE COORDENADAS DEL VEHICULO (Geográficas)</b>
+		 <hr>
+		  <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="longitude"><b>LONGITUD</b></label>
+                    <input id="longitude" type="text" name="longitude" class="form-control" 
+					placeholder="Ingrese Longitud *" required="required" data-error="longitude is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+			<div class="col-md-6">
+                <div class="form-group">
+                    <label for="latitude"><b>LATITUD</b></label>
+                    <input id="latitude" type="text" name="latitude" class="form-control" 
+					placeholder="Ingrese Latitud *" required="required" data-error="latitude is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <input id="submit" type="button" name="submit" class="btn btn-dark btn-send" value="Agregar Nuevo Vehiculo">
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="../js/add-vehicle.js"></script>
+
+</body>
+</html>
